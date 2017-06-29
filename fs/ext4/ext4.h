@@ -2337,6 +2337,9 @@ static inline void ext4_fname_free_filename(struct ext4_filename *fname) { }
 
 #endif
 
+/* compression.c */
+extern void compress_page(void);
+
 /* dir.c */
 extern int __ext4_check_dir_entry(const char *, unsigned int, struct inode *,
 				  struct file *,
