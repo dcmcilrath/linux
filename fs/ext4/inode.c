@@ -39,6 +39,13 @@
 #include <linux/bitops.h>
 #include <linux/iomap.h>
 
+#ifndef EXT4_COMPRESSION
+#define EXT4_COMPRESSION
+
+extern void compress_page(void);	// in compression.c
+
+#endif
+
 #include "ext4_jbd2.h"
 #include "xattr.h"
 #include "acl.h"
@@ -2050,6 +2057,9 @@ static int ext4_writepage(struct page *page,
 	struct inode *inode = page->mapping->host;
 	struct ext4_io_submit io_submit;
 	bool keep_towrite = false;
+
+	//printk("doug was here.\n");
+	compress_page();
 
 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb)))) {
 		ext4_invalidatepage(page, 0, PAGE_SIZE);

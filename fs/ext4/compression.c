@@ -10,10 +10,11 @@ void compress_page(void)
 	// This function doesn't do anything... yet!
 
 	// Hello World test.
-	static int first_run = 1;
+	printk("EXT4_COMPRESSION: Hello World!");
+
+	/*static int first_run = 1;
 	if (first_run)
 	{
-		printk("EXT4_COMPRESSION: Hello World!");
 		first_run = 0;
-	}
+	}*/
 }
