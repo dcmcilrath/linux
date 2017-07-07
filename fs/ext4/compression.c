@@ -4,17 +4,23 @@
  */
 
 #include <linux/printk.h>
+#include <linux/buffer_head.h>
 
-void compress_page(void)
+void ext4_compression_debug(const char *fwd, ...)
 {
-	// This function doesn't do anything... yet!
+	va_list args;
+	char msg[256];
 
-	// Hello World test.
-	printk("EXT4_COMPRESSION: Hello World!");
+	strcpy(msg, "EXT4_COMPRESSION: ");
+	strcat(msg, fwd);
+	
+	va_start(args, fwd);
+	printk(msg, args);
+	va_end(args);
+}
 
-	/*static int first_run = 1;
-	if (first_run)
-	{
-		first_run = 0;
-	}*/
+void compress_page(struct buffer_head * bh)
+{
+	printk("EXT4_COMPRESSION: made it to compress_page");
+	ext4_compression_debug("got page buffer with size %d\n", bh->b_size);
 }

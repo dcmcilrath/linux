@@ -39,17 +39,12 @@
 #include <linux/bitops.h>
 #include <linux/iomap.h>
 
-#ifndef EXT4_COMPRESSION
-#define EXT4_COMPRESSION
-
-extern void compress_page(void);	// in compression.c
-
-#endif
-
 #include "ext4_jbd2.h"
 #include "xattr.h"
 #include "acl.h"
 #include "truncate.h"
+
+#include "compression.h"
 
 #include <trace/events/ext4.h>
 
@@ -2058,8 +2053,7 @@ static int ext4_writepage(struct page *page,
 	struct ext4_io_submit io_submit;
 	bool keep_towrite = false;
 
-	//printk("doug was here.\n");
-	compress_page();
+	printk("EXT4_COMPRESSION: Hello?");
 
 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb)))) {
 		ext4_invalidatepage(page, 0, PAGE_SIZE);
@@ -2074,7 +2068,9 @@ static int ext4_writepage(struct page *page,
 	else
 		len = PAGE_SIZE;
 
-	page_bufs = page_buffers(page);
+	page_bufs = page_buffers(page); // <-- actual data queried here, stored in page_bufs
+	//compress_page(page_bufs);
+
 	/*
 	 * We cannot do block allocation or other extent handling in this
 	 * function. If there are buffers needing that, we have to redirty
