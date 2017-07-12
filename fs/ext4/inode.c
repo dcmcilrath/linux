@@ -2053,8 +2053,6 @@ static int ext4_writepage(struct page *page,
 	struct ext4_io_submit io_submit;
 	bool keep_towrite = false;
 
-	printk("EXT4_COMPRESSION: Hello?");
-
 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb)))) {
 		ext4_invalidatepage(page, 0, PAGE_SIZE);
 		unlock_page(page);
@@ -2068,8 +2066,7 @@ static int ext4_writepage(struct page *page,
 	else
 		len = PAGE_SIZE;
 
-	page_bufs = page_buffers(page); // <-- actual data queried here, stored in page_bufs
-	//compress_page(page_bufs);
+	page_bufs = page_buffers(page);
 
 	/*
 	 * We cannot do block allocation or other extent handling in this
@@ -2680,6 +2677,8 @@ static int ext4_writepages(struct address_space *mapping,
 	bool done;
 	struct blk_plug plug;
 	bool give_up_on_write = false;
+
+	compress_page(sbi->s_sbh);
 
 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb))))
 		return -EIO;

@@ -5,13 +5,16 @@
 
 #include <linux/printk.h>
 #include <linux/buffer_head.h>
+#include <linux/lzo.h>
 
-void ext4_compression_debug(const char *fwd, ...)
+char workspace[LZO1X_MEM_COMPRESS];
+
+void ext4c_debug(const char *fwd, ...)
 {
 	va_list args;
 	char msg[256];
 
-	strcpy(msg, "EXT4_COMPRESSION: ");
+	strcpy(msg, "EXT4C: ");
 	strcat(msg, fwd);
 	
 	va_start(args, fwd);
@@ -21,6 +24,5 @@ void ext4_compression_debug(const char *fwd, ...)
 
 void compress_page(struct buffer_head * bh)
 {
-	printk("EXT4_COMPRESSION: made it to compress_page");
-	ext4_compression_debug("got page buffer with size %d\n", bh->b_size);
+	ext4c_debug("got page buffer with size %lu\n", bh->b_size);	
 }
