@@ -2678,8 +2678,6 @@ static int ext4_writepages(struct address_space *mapping,
 	struct blk_plug plug;
 	bool give_up_on_write = false;
 
-	compress_page(sbi->s_sbh);
-
 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb))))
 		return -EIO;
 
